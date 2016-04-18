@@ -1,0 +1,17 @@
+stages:
+  - test
+
+test-3.4.5.1:
+  image: repo.dev.terastrm.net:5000/ci-cisco-nso:3.4.5.1
+  stage: test
+  tags:
+    - no-docker
+  script:
+    - source /etc/profile.d/ncs.sh
+    - ln -s $(pwd) /var/opt/ncs/packages
+    - cd src && make
+    - NCS_PACKAGES_RELOAD=true /etc/init.d/ncs start
+    - NCS_RELOAD=$(echo "request packages reload" | ncs_cli -u admin)
+    - echo "$NCS_RELOAD"
+    - '! echo "$NCS_RELOAD" | grep "info \[" > /dev/null'
+
