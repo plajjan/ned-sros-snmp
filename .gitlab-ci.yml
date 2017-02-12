@@ -10,9 +10,10 @@ stages:
     - /etc/init.d/ncs start
     - ln -s $(pwd) /var/opt/ncs/packages
     - cd src && make
-    - NCS_RELOAD=$(echo "request packages reload" | ncs_cli -g ncsadmin -u admin)
-    - echo "$NCS_RELOAD"
-    - echo "$NCS_RELOAD" | grep "result true"
+    - echo "request packages reload" | ncs_cli -g ncsadmin -u admin
+    - STATUS=$(echo "show packages package oper-status" | ncs_cli -g ncsadmin -u admin)
+    - echo "$STATUS"
+    - echo "$STATUS" | grep "oper-status up"
   artifacts:
     paths:
       - .
