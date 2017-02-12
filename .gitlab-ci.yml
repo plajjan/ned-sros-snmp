@@ -1,25 +1,7 @@
 stages:
   - test
 
-test-3.4.8:
-  image: repo.dev.terastrm.net:5000/ci-cisco-nso:3.4.8
-  stage: test
-  tags:
-    - no-docker
-  script:
-    - source /etc/profile.d/ncs.sh
-    - ln -s $(pwd) /var/opt/ncs/packages
-    - cd src && make
-    - NCS_PACKAGES_RELOAD=true /etc/init.d/ncs start
-    - NCS_RELOAD=$(echo "request packages reload" | ncs_cli -u admin)
-    - echo "$NCS_RELOAD"
-    - '! echo "$NCS_RELOAD" | grep "info \[" > /dev/null'
-  artifacts:
-    paths:
-      - .
-
-test-4.2.2:
-  image: repo.dev.terastrm.net:5000/ci-cisco-nso:4.2.2
+.test-template: &test-template
   stage: test
   tags:
     - no-docker
@@ -28,9 +10,22 @@ test-4.2.2:
     - /etc/init.d/ncs start
     - ln -s $(pwd) /var/opt/ncs/packages
     - cd src && make
-    - NCS_RELOAD=$(echo "request packages reload" | ncs_cli -u admin)
+    - NCS_RELOAD=$(echo "request packages reload" | ncs_cli -g ncsadmin -u admin)
     - echo "$NCS_RELOAD"
-    - '! echo "$NCS_RELOAD" | grep "info \[" > /dev/null'
+    - echo "$NCS_RELOAD" | grep "result true"
   artifacts:
     paths:
       - .
+
+
+test-4.2.2:
+  image: repo.dev.terastrm.net:5000/ci-cisco-nso:4.2.2
+  <<: *test-template
+
+test-4.3.1:
+  image: repo.dev.terastrm.net:5000/ci-cisco-nso:4.3.1
+  <<: *test-template
+
+test-3.4.8:
+  image: repo.dev.terastrm.net:5000/ci-cisco-nso:3.4.8
+  <<: *test-template
