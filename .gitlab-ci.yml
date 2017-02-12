@@ -11,6 +11,7 @@ stages:
     - ln -s $(pwd) /var/opt/ncs/packages
     - cd src && make
     - echo "request packages reload" | ncs_cli -g ncsadmin -u admin
+    - sleep 60
     - STATUS=$(echo "show packages package oper-status" | ncs_cli -g ncsadmin -u admin)
     - echo "$STATUS"
     - echo "$STATUS" | grep "oper-status up"
