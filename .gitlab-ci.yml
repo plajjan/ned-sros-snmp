@@ -1,5 +1,6 @@
 stages:
   - test
+  - git-robot
 
 .test-template: &test-template
   stage: test
@@ -31,3 +32,56 @@ test-4.3.1:
 test-4.4:
   image: repo.dev.terastrm.net:5000/ci-cisco-nso:4.4
   <<: *test-template
+
+
+git-rebase-ts:
+  image: gitlab.dev.terastrm.net:4567/terastream/cisco-nso/ci-cisco-nso:4.2.3
+  stage: git-robot
+  only:
+    - master
+  tags:
+    - no-docker
+  allow_failure: true
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
+    - git config --global user.email "kll@dev.terastrm.net"
+    - git config --global user.name "Mr. Robot"
+    - mkdir -p ~/.ssh
+    - ssh-keyscan gitlab.dev.terastrm.net >> ~/.ssh/known_hosts
+  script:
+    - echo -e "\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\nHello, I'm Mr. Robot and I will assist you with boring git meta tasks.\n\nI will now try to rebase the 'ts' branch on master, since we want to capture\nall the fixes etc that are on the master branch. This might fail, in which case\nI naturally will not push anything. Instead, you will have to rebase manually,\nmmkay?\n\n//Mr. Robot\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n"
+    - git clone git@gitlab.dev.terastrm.net:${CI_PROJECT_PATH}.git
+    - cd ${CI_PROJECT_NAME}
+    - git checkout ts
+    - git rebase master
+    - git push --force origin ts
+
+
+git-open-mr:
+  image: gitlab.dev.terastrm.net:4567/terastream/cisco-nso/ci-cisco-nso:4.2.3
+  stage: git-robot
+  only:
+    - ts
+  tags:
+    - no-docker
+  allow_failure: true
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
+    - git config --global user.email "kll@dev.terastrm.net"
+    - git config --global user.name "Mr. Robot"
+    - mkdir -p ~/.ssh
+    - ssh-keyscan gitlab.dev.terastrm.net >> ~/.ssh/known_hosts
+  script:
+    - echo -e "\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\nHello, I'm Mr. Robot and I will assist you with boring git meta tasks.\n\nI will now try to open a merge request on nso-ts to use this latest version of\nthe NED. \n\n//Mr. Robot\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n"
+    - git clone git@gitlab.dev.terastrm.net:TeraStream/nso-ts.git
+    - cd nso-ts
+    - git checkout -b robot-update-${CI_PROJECT_NAME}-${CI_PIPELINE_ID}
+    - for LIST_FILE in $(ls ../ned-package-list.* | xargs -n1 basename); do NED_BUILD=$(cat ../${LIST_FILE}); sed -i packages/${LIST_FILE} -e "s/^${CI_PROJECT_NAME}.*/${CI_PROJECT_NAME}=${NED_BUILD}/"; done
+    - git diff
+    - git commit -a -m "Use ${CI_PROJECT_NAME} artifacts from pipeline ${CI_PIPELINE_ID}"
+    - git push origin robot-update-${CI_PROJECT_NAME}-${CI_PIPELINE_ID}
+    - HOST=${CI_PROJECT_URL} CI_COMMIT_REF_NAME=robot-update-${CI_PROJECT_NAME}-${CI_PIPELINE_ID} CI_PROJECT_NAME=TeraStream/nso-ts GITLAB_USER_ID=${GITLAB_USER_ID} PRIVATE_TOKEN=${PRIVATE_TOKEN} ../open-mr.sh
