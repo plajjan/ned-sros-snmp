@@ -37,6 +37,7 @@ test-4.4:
 
 
 git-rebase-ts:
+  when: always
   image: gitlab.dev.terastrm.net:4567/terastream/cisco-nso/ci-cisco-nso:4.2.3
   stage: git-robot
   only:
