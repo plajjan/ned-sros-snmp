@@ -16,6 +16,8 @@ stages:
     - STATUS=$(echo "show packages package oper-status" | ncs_cli -g ncsadmin -u admin)
     - echo "$STATUS"
     - echo "$STATUS" | grep "oper-status up"
+    - if [[ ${CI_JOB_NAME} =~ ^test-([0-9]+\.[0-9]+).*$ ]]; then NCS_VERSION=${BASH_REMATCH[1]}; fi
+    - echo ${CI_JOB_ID} >> ned-package-list.${NCS_VERSION}
   artifacts:
     paths:
       - .
