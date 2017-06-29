@@ -9,7 +9,7 @@ stages:
     - source /etc/profile.d/ncs.sh
     - /etc/init.d/ncs start
     - ln -s $(pwd) /var/opt/ncs/packages
-    - cd src && make
+    - make -C src
     - ( echo "request packages reload" | ncs_cli -g ncsadmin -u admin ) || true
     - sleep 60
     - STATUS=$(echo "show packages package oper-status" | ncs_cli -g ncsadmin -u admin)
