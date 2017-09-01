@@ -75,6 +75,8 @@ IMPORTS
 
     LldpPortIdSubtype                       FROM LLDP-MIB 
 
+    tLagRowStatus                           FROM TIMETRA-LAG-MIB
+
     TmnxBsxOperator,
     TmnxBsxActionStatus,
     TmnxBsxAaSubscriberType                 FROM TIMETRA-BSX-NG-MIB
@@ -96,7 +98,11 @@ IMPORTS
 
     TmnxEnabledDisabled, TIpProtocol,
     TmnxServId, TNamedItemOrEmpty,
-    TmnxSubRadServAlgorithm                 FROM TIMETRA-TC-MIB;
+    TmnxSubRadServAlgorithm                 FROM TIMETRA-TC-MIB
+
+    vRtrIsisIfRowStatus                     FROM TIMETRA-ISIS-MIB
+
+    vRtrLdpStatus                           FROM TIMETRA-VRTR-MIB;
 
 --
 -- Capability statements for SROS release 15.0
