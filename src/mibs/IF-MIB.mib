@@ -1,3 +1,5 @@
+-- Extracted from rfc2863.txt
+--
 IF-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
@@ -78,6 +80,7 @@ InterfaceIndex ::= TEXTUAL-CONVENTION
     DISPLAY-HINT "d"
     STATUS       current
     DESCRIPTION
+
             "A unique value, greater than zero, for each interface or
             interface sub-layer in the managed system.  It is
             recommended that values are assigned contiguously starting
@@ -1040,7 +1043,6 @@ ifRcvAddressTable  OBJECT-TYPE
             are only required for those addresses for which the system
             would receive frames were it not operating in promiscuous
             mode.
-
             - for 802.5 functional addresses, only one entry is
             required, for the address which has the functional address
             bit ANDed with the bit mask of all functional addresses for
@@ -1425,7 +1427,6 @@ ifTestTable   OBJECT-TYPE
               lock_value = ifTestId
 
               if ( set(ifTestId = lock_value, ifTestStatus = inUse,
-
                        ifTestOwner = 'my-IP-address') == FAILURE)
                   /*
                    * Another manager got the ifTestEntry -- go

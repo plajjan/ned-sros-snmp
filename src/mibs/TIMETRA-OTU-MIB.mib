@@ -1,88 +1,69 @@
 TIMETRA-OTU-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-        MODULE-IDENTITY, OBJECT-TYPE,
-        NOTIFICATION-TYPE, Unsigned32,
-        Counter32, Counter64                    FROM SNMPv2-SMI
+    ifIndex
+                                                         FROM IF-MIB
+    MODULE-COMPLIANCE, NOTIFICATION-GROUP,
+    OBJECT-GROUP
+                                                         FROM SNMPv2-CONF
+    Counter32, Counter64, MODULE-IDENTITY,
+    NOTIFICATION-TYPE, OBJECT-TYPE,
+    Unsigned32
+                                                         FROM SNMPv2-SMI
+    RowStatus, TEXTUAL-CONVENTION,
+    TimeStamp, TruthValue
+                                                         FROM SNMPv2-TC
+    timetraSRMIBModules, tmnxSRConfs,
+    tmnxSRNotifyPrefix, tmnxSRObjs
+                                                         FROM TIMETRA-GLOBAL-MIB
+    TmnxActionType
+                                                         FROM TIMETRA-TC-MIB
+    ;
 
-        MODULE-COMPLIANCE, OBJECT-GROUP,
-        NOTIFICATION-GROUP                      FROM SNMPv2-CONF
-
-        TEXTUAL-CONVENTION, RowStatus,
-        TimeStamp, TruthValue                   FROM SNMPv2-TC
-
-        ifIndex                                 FROM IF-MIB
-
-        timetraSRMIBModules, tmnxSRObjs,
-        tmnxSRNotifyPrefix, tmnxSRConfs         FROM TIMETRA-GLOBAL-MIB
-
-        TmnxActionType                          FROM TIMETRA-TC-MIB
-        ;
-
-tmnxOtuMIBModule MODULE-IDENTITY
-        LAST-UPDATED    "0902280000Z"
-        ORGANIZATION    "Alcatel-Lucent"
-        CONTACT-INFO
-            "Alcatel-Lucent 7x50 Support
-             Web: http://support.alcatel-lucent.com"
-        DESCRIPTION
+tmnxOtuMIBModule                 MODULE-IDENTITY
+    LAST-UPDATED "201501010000Z"
+    ORGANIZATION "Nokia"
+    CONTACT-INFO
+        "Nokia 7x50 Support
+         Web: http://www.nokia.com"
+    DESCRIPTION
         "This document is the SNMP MIB module to manage and provision the
-        Optical Transport Unit (OTU) components of the Alcatel-Lucent SROS
-        device.
+         Optical Transport Unit (OTU) components of the Nokia SROS device.
 
-        Copyright 2008-2013 Alcatel-Lucent.  All rights reserved.
-        Reproduction of this document is authorized on the condition that
-        the foregoing copyright notice is included.
+         Copyright 2008-2017 Nokia.  All rights reserved.
+         Reproduction of this document is authorized on the condition that
+         the foregoing copyright notice is included.
 
-        This SNMP MIB module (Specification) embodies Alcatel-Lucent's
-        proprietary intellectual property.  Alcatel-Lucent retains
-        all title and ownership in the Specification, including any
-        revisions.
+         This SNMP MIB module (Specification) embodies Nokia's
+         proprietary intellectual property.  Nokia retains
+         all title and ownership in the Specification, including any
+         revisions.
 
-        Alcatel-Lucent grants all interested parties a non-exclusive
-        license to use and distribute an unmodified copy of this
-        Specification in connection with management of Alcatel-Lucent
-        products, and without fee, provided this copyright notice and
-        license appear on all copies.
+         Nokia grants all interested parties a non-exclusive license to use and
+         distribute an unmodified copy of this Specification in connection with
+         management of Nokia products, and without fee, provided this copyright
+         notice and license appear on all copies.
 
-        This Specification is supplied 'as is', and Alcatel-Lucent
-        makes no warranty, either express or implied, as to the use,
-        operation, condition, or performance of the Specification."
+         This Specification is supplied 'as is', and Nokia makes no warranty,
+         either express or implied, as to the use, operation, condition, or
+         performance of the Specification."
 
---
---  Revision History
---
-        REVISION        "0902280000Z"
-        DESCRIPTION     "Rev 7.0                28 Feb 2009 00:00
-                         7.0 release of the TIMETRA-OTU-MIB."
+    REVISION    "201501010000Z"
+    DESCRIPTION
+        "Rev 13.0                1 Jan 2015 00:00
+         13.0 release of the TIMETRA-OTU-MIB."
 
-        REVISION        "0810230000Z"
-        DESCRIPTION     "Rev 1.0                01 Jul 2008 00:00
-                         1.0 release of the TIMETRA-OTU-MIB."
+    REVISION    "200902280000Z"
+    DESCRIPTION
+        "Rev 7.0                28 Feb 2009 00:00
+         7.0 release of the TIMETRA-OTU-MIB."
 
-        ::= { timetraSRMIBModules 62 }
+    REVISION    "200810230000Z"
+    DESCRIPTION
+        "Rev 1.0                01 Jul 2008 00:00
+         1.0 release of the TIMETRA-OTU-MIB."
 
-
-tmnxOtuObjs                     OBJECT IDENTIFIER ::= { tmnxSRObjs          62 }
-tmnxOtuNotifyPrefix             OBJECT IDENTIFIER ::= { tmnxSRNotifyPrefix  62 }
-tmnxOtuConformance              OBJECT IDENTIFIER ::= { tmnxSRConfs         62 }
-
--- Object Groups in the Alcatel-Lucent OTU MIB Module
-tmnxOtuConfigurationTimeStamps  OBJECT IDENTIFIER ::= { tmnxOtuObjs          0 }
-tmnxOtuConfigurations           OBJECT IDENTIFIER ::= { tmnxOtuObjs          1 }
-tmnxOtuStatistics               OBJECT IDENTIFIER ::= { tmnxOtuObjs          2 }
-
--- Notification Groups in the Alcatel-Lucent OTU MIB Module
-tmnxOtuNotifications            OBJECT IDENTIFIER ::= { tmnxOtuNotifyPrefix  0 }
-
--- Compliance Groups in the Alcatel-Lucent OTU MIB Module
-tmnxOtuCompliances              OBJECT IDENTIFIER ::= { tmnxOtuConformance   1 }
-tmnxOtuGroups                   OBJECT IDENTIFIER ::= { tmnxOtuConformance   2 }
-
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---   TIMETRA-OTU-MIB Textual Conventions
---
+    ::= { timetraSRMIBModules 62 }
 
 TmnxOtuFecMode                   ::= TEXTUAL-CONVENTION
     STATUS      current
@@ -94,10 +75,10 @@ TmnxOtuFecMode                   ::= TEXTUAL-CONVENTION
                 - g709fec        - OTU encap enabled with G.709 FEC.
                 - enhanced       - OTU encap enabled with enhanced FEC."
     SYNTAX      INTEGER {
-                    disabled (0),
-                    g709fec  (1),
-                    enhanced (2)
-                }
+        disabled (0),
+        g709fec  (1),
+        enhanced (2)
+    }
 
 TmnxOtu2LanDataRate              ::= TEXTUAL-CONVENTION
     STATUS      current
@@ -107,23 +88,23 @@ TmnxOtu2LanDataRate              ::= TEXTUAL-CONVENTION
 
                 - notApplicable  - not an OTU 10GE enabled interface.
                 - dr11049        - 11.049 Gb/s synchronous OTU encapsulated
-                                   10GE-LAN signal. (ie. No fixed stuffing
+                                   10GE-LAN signal. (i.e. No fixed stuffing
                                    bytes in the OTU2 frame).
                 - dr11096        - 11.0957 Gb/s synchronous OTU encapsulated
-                                   10GE-LAN signal. (ie. Fixed stuffing bytes
+                                   10GE-LAN signal. (i.e. Fixed stuffing bytes
                                    in the OTU2 frame)."
     SYNTAX      INTEGER {
-                    notApplicable (0),
-                    dr11049       (1),
-                    dr11096       (2)
-                }
+        notApplicable (0),
+        dr11049       (1),
+        dr11096       (2)
+    }
 
 TmnxOtuSFSDMethod                ::= TEXTUAL-CONVENTION
     STATUS      current
     DESCRIPTION
         "The TmnxOtuSFSDMethod specifies the method to determine the Signal
-         Failure (SF) and Signal Degradation (SD) of the interface.
-         The valid methods are as follows:
+         Failure (SF) and Signal Degradation (SD) of the interface. The valid
+         methods are as follows:
 
                 - fec            - FEC correctable bit errors are used to
                                    declare the presence of the Signal Fail and
@@ -132,9 +113,9 @@ TmnxOtuSFSDMethod                ::= TEXTUAL-CONVENTION
                                    presence of the Signal Fail and Signal
                                    Degrade condition."
     SYNTAX      INTEGER {
-                    fec           (1),
-                    bip8          (2)
-                }
+        fec  (1),
+        bip8 (2)
+    }
 
 TmnxOtuTtiMode                   ::= TEXTUAL-CONVENTION
     STATUS      current
@@ -150,10 +131,10 @@ TmnxOtuTtiMode                   ::= TEXTUAL-CONVENTION
                 - bytes          - Specifies that the TTI Section is a
                                    sequence of bytes."
     SYNTAX      INTEGER {
-                    auto   (0),
-                    string (1),
-                    bytes  (2)
-                }
+        auto   (0),
+        string (1),
+        bytes  (2)
+    }
 
 TmnxOtuTtiString                 ::= TEXTUAL-CONVENTION
     STATUS      current
@@ -161,13 +142,14 @@ TmnxOtuTtiString                 ::= TEXTUAL-CONVENTION
         "The TmnxOtuTtiString specifies the data transmitted in the Trail Trace
          Identifier (TTI) Section of the OTU frame. The TTI Section may consist
          of octet values from the range 0..255 (0x00..0xFF)."
-    SYNTAX      OCTET STRING(SIZE (0..255))
+    SYNTAX      OCTET STRING (SIZE (0..255))
 
 TmnxOtuAlarms                    ::= TEXTUAL-CONVENTION
     STATUS      current
     DESCRIPTION
-        "The TmnxOtuAlarms specifies the alarms which are enabled or outstanding
-         against an OTU enabled interface. The valid alarms are as follows:
+        "The TmnxOtuAlarms specifies the alarms which are enabled or
+         outstanding against an OTU enabled interface. The valid alarms are as
+         follows:
 
                 - loc            - Loss of Clock.
                 - los            - Loss of Signal.
@@ -194,43 +176,43 @@ TmnxOtuAlarms                    ::= TEXTUAL-CONVENTION
                 - opuTim         - OPU PSI Trace Mismatch.
                 - opuPlm         - OPU PSI Payload Type Mismatch."
     SYNTAX      BITS {
-                    loc            (0),
-                    los            (1),
-                    lof            (2),
-                    lom            (3),
-                    otuAis         (4),
-                    otuBerSf       (5),
-                    otuBerSd       (6),
-                    otuBdi         (7),
-                    otuTim         (8),
-                    otuIae         (9),
-                    otuBiae        (10),
-                    fecSf          (11),
-                    fecSd          (12),
-                    fecFail        (13),
-                    fecUncorr      (14),
-                    oduAis         (15),
-                    oduOci         (16),
-                    oduLck         (17),
-                    oduBdi         (18),
-                    oduTim         (19),
-                    opuTim         (20),
-                    opuPlm         (21)
-                }
+        loc       (0),
+        los       (1),
+        lof       (2),
+        lom       (3),
+        otuAis    (4),
+        otuBerSf  (5),
+        otuBerSd  (6),
+        otuBdi    (7),
+        otuTim    (8),
+        otuIae    (9),
+        otuBiae   (10),
+        fecSf     (11),
+        fecSd     (12),
+        fecFail   (13),
+        fecUncorr (14),
+        oduAis    (15),
+        oduOci    (16),
+        oduLck    (17),
+        oduBdi    (18),
+        oduTim    (19),
+        opuTim    (20),
+        opuPlm    (21)
+    }
 
 TmnxOtuPsiPayloadType            ::= TEXTUAL-CONVENTION
     STATUS      current
     DESCRIPTION
         "The TmnxOtuPsiPayloadType specifies the payload type identifier as
-         defined in table 15-8 of section 15.9.2.1.1 of ITU-T Rec. G.709
-         and the codes are as follows:
+         defined in table 15-8 of section 15.9.2.1.1 of ITU-T Rec. G.709 and
+         the codes are as follows:
 
                 - auto           - Automatic based on operating mode.
                 - exp            - Experimental mapping.
                 - asyncCbr       - Asynchronous CBR mapping.
                 - syncCbr        - Bit synchronous CBR mapping.
                 - atm            - ATM mapping.
-                - gfp            - GFP mapping.                
+                - gfp            - GFP mapping.
                 - vcat           - Virtual Concatenated signal.
                 - gmp            - Generic Mapping Procedure.
                 - bitStrOctet    - Bit stream with octet timing mapping.
@@ -254,38 +236,37 @@ TmnxOtuPsiPayloadType            ::= TEXTUAL-CONVENTION
                 - rsvd8F         - Reserved Proprietary 0x8F
                 - nullTest       - NULL test signal mapping.
                 - prbsTest       - PRBS test signal mapping."
-
     SYNTAX      INTEGER {
-                    auto          (0),
-                    exp           (1),
-                    asyncCbr      (2),
-                    syncCbr       (3),
-                    atm           (4),
-                    gfp           (5),
-                    vcat          (6),
-                    gmp           (7),
-                    bitStrOctet   (16),
-                    bitStrNoOctet (17),
-                    oduMux        (32),
-                    rsvd80        (128),
-                    rsvd81        (129),
-                    rsvd82        (130),
-                    rsvd83        (131),
-                    rsvd84        (132),
-                    rsvd85        (133),
-                    rsvd86        (134),
-                    rsvd87        (135),
-                    rsvd88        (136),
-                    rsvd89        (137),
-                    rsvd8A        (138),
-                    rsvd8B        (139),
-                    rsvd8C        (140),
-                    rsvd8D        (141),
-                    rsvd8E        (142),
-                    rsvd8F        (143),
-                    nullTest      (253),
-                    prbsTest      (254)
-                }
+        auto          (0),
+        exp           (1),
+        asyncCbr      (2),
+        syncCbr       (3),
+        atm           (4),
+        gfp           (5),
+        vcat          (6),
+        gmp           (7),
+        bitStrOctet   (16),
+        bitStrNoOctet (17),
+        oduMux        (32),
+        rsvd80        (128),
+        rsvd81        (129),
+        rsvd82        (130),
+        rsvd83        (131),
+        rsvd84        (132),
+        rsvd85        (133),
+        rsvd86        (134),
+        rsvd87        (135),
+        rsvd88        (136),
+        rsvd89        (137),
+        rsvd8A        (138),
+        rsvd8B        (139),
+        rsvd8C        (140),
+        rsvd8D        (141),
+        rsvd8E        (142),
+        rsvd8F        (143),
+        nullTest      (253),
+        prbsTest      (254)
+    }
 
 TmnxOtuTimReaction               ::= TEXTUAL-CONVENTION
     STATUS      current
@@ -302,14 +283,32 @@ TmnxOtuTimReaction               ::= TEXTUAL-CONVENTION
                                    when a Trace Identifier Mismatch is
                                    detected."
     SYNTAX      INTEGER {
-                    none       (0),
-                    squelchRx  (1)
-                }
+        none      (0),
+        squelchRx (1)
+    }
 
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Configuration Objects
---
+TmnxOtuIfOtu4SignalType          ::= TEXTUAL-CONVENTION
+    STATUS      current
+    DESCRIPTION
+        "TmnxOtuIfOtu4SignalType is an enumerated integer that specifies the
+         signal type that can be provisioned on the OTU encapsulated physical
+         interface.
+
+         Values:
+            'notApplicable' - The provisioned port is not a DWDM line port.
+            'otu4'          - The DWDM line port can transport one 100GbE
+                              client signal.
+            'otu4x2'        - The DWDM line port can transport up to two
+                              100GbE client signals."
+    SYNTAX      INTEGER {
+        notApplicable (1),
+        otu4          (2),
+        otu4x2        (3)
+    }
+
+tmnxOtuObjs                      OBJECT IDENTIFIER ::= { tmnxSRObjs 62 }
+
+tmnxOtuConfigurationTimeStamps   OBJECT IDENTIFIER ::= { tmnxOtuObjs 0 }
 
 tmnxOtuIfTableLastChanged        OBJECT-TYPE
     SYNTAX      TimeStamp
@@ -320,13 +319,14 @@ tmnxOtuIfTableLastChanged        OBJECT-TYPE
          startup, when a row in the tmnxOtuIfTable last changed."
     ::= { tmnxOtuConfigurationTimeStamps 1 }
 
+tmnxOtuConfigurations            OBJECT IDENTIFIER ::= { tmnxOtuObjs 1 }
+
 tmnxOtuIfTable                   OBJECT-TYPE
     SYNTAX      SEQUENCE OF TmnxOtuIfEntry
     MAX-ACCESS  not-accessible
     STATUS      current
     DESCRIPTION
-        "The tmnxOtuIfTable consists of the interfaces using OTU
-         encapsulation."
+        "The tmnxOtuIfTable consists of the interfaces using OTU encapsulation."
     ::= { tmnxOtuConfigurations 1 }
 
 tmnxOtuIfEntry                   OBJECT-TYPE
@@ -339,12 +339,11 @@ tmnxOtuIfEntry                   OBJECT-TYPE
 
          Rows in this table are created and destroyed using the
          tmnxOtuIfRowStatus object."
-    INDEX {
-             ifIndex
-          }
+    INDEX       { ifIndex }
     ::= { tmnxOtuIfTable 1 }
 
-TmnxOtuIfEntry                   ::= SEQUENCE {
+TmnxOtuIfEntry                   ::= SEQUENCE
+{
     tmnxOtuIfRowStatus               RowStatus,
     tmnxOtuIfTimeStamp               TimeStamp,
     tmnxOtuIfFecMode                 TmnxOtuFecMode,
@@ -395,13 +394,13 @@ tmnxOtuIfRowStatus               OBJECT-TYPE
          entries in the tmnxOtuIfTable.
 
          Creating a row in the tmnxOtuIfTable using 'createAndGo (4)' enables
-         OTU encapsulation for the interface. Deleting the row using
-         'destroy (6)' will disable the OTU encapsulation.
+         OTU encapsulation for the interface. Deleting the row using 'destroy
+         (6)' will disable the OTU encapsulation.
 
          If a physical port does not support the OTU encapsulation, an attempt
          to set the tmnxOtuIfRowStatus to a value of 'createAndGo (4)' will
          fail with an inconsistent value result."
-   ::= { tmnxOtuIfEntry 1 }
+    ::= { tmnxOtuIfEntry 1 }
 
 tmnxOtuIfTimeStamp               OBJECT-TYPE
     SYNTAX      TimeStamp
@@ -410,7 +409,7 @@ tmnxOtuIfTimeStamp               OBJECT-TYPE
     DESCRIPTION
         "The tmnxOtuIfTimeStamp indicates the time, since system startup, of
          the last change to this row."
-   ::= { tmnxOtuIfEntry 2 }
+    ::= { tmnxOtuIfEntry 2 }
 
 tmnxOtuIfFecMode                 OBJECT-TYPE
     SYNTAX      TmnxOtuFecMode
@@ -419,7 +418,7 @@ tmnxOtuIfFecMode                 OBJECT-TYPE
     DESCRIPTION
         "The tmnxOtuIfFecMode specifies the OTU encapsulation used by this
          interface."
-    DEFVAL { enhanced }
+    DEFVAL      { enhanced }
     ::= { tmnxOtuIfEntry 3 }
 
 tmnxOtuIfSfSdMethod              OBJECT-TYPE
@@ -427,9 +426,9 @@ tmnxOtuIfSfSdMethod              OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The tmnxOtuIfSfSdMethod specifies the method on which to detect
-         Signal Failure and Signal Degradation."
-    DEFVAL { fec }
+        "The tmnxOtuIfSfSdMethod specifies the method on which to detect Signal
+         Failure and Signal Degradation."
+    DEFVAL      { fec }
     ::= { tmnxOtuIfEntry 4 }
 
 tmnxOtuIfBerSfThreshold          OBJECT-TYPE
@@ -453,7 +452,7 @@ tmnxOtuIfBerSfThreshold          OBJECT-TYPE
          fec (1)               Each corrected bit counts as one bit error.
          bip8 (2)              Each BIP8 coding violation counts as one bit
                                error."
-    DEFVAL { 5 }
+    DEFVAL      { 5 }
     ::= { tmnxOtuIfEntry 5 }
 
 tmnxOtuIfBerSdThreshold          OBJECT-TYPE
@@ -477,7 +476,7 @@ tmnxOtuIfBerSdThreshold          OBJECT-TYPE
          fec (1)               Each corrected bit counts as one bit error.
          bip8 (2)              Each BIP8 coding violation counts as one bit
                                error."
-    DEFVAL { 7 }
+    DEFVAL      { 7 }
     ::= { tmnxOtuIfEntry 6 }
 
 tmnxOtuIfOtuOperDataRate         OBJECT-TYPE
@@ -500,7 +499,7 @@ tmnxOtuIfOtu2LanDataRate         OBJECT-TYPE
          is transmitted on the line. An interface that does not support OTU2
          encapsulation will default, and be restricted to, the value of
          'notApplicable (0)'."
-    DEFVAL  { dr11049 }
+    DEFVAL      { dr11049 }
     ::= { tmnxOtuIfEntry 8 }
 
 tmnxOtuIfCfgAlarms               OBJECT-TYPE
@@ -513,7 +512,7 @@ tmnxOtuIfCfgAlarms               OBJECT-TYPE
          corresponding alarm will raise/clear an alarm when its state changes.
          An unset bit specifies that the alarm corresponding with the bit will
          not alarm on its state transitions."
----    DEFVAL { {loc, los, lof, lom, otuBdi, otuBerSf, fecSf} }
+    DEFVAL      { {loc, los, lof, lom, otuBdi, otuBerSf, fecSf} }
     ::= { tmnxOtuIfEntry 9 }
 
 tmnxOtuIfAlarmState              OBJECT-TYPE
@@ -539,14 +538,14 @@ tmnxOtuIfHoldTimeUp              OBJECT-TYPE
 
          A value of zero (0) indicates that an up transition is reported
          immediately."
-    DEFVAL { 5 }
+    DEFVAL      { 5 }
     ::= { tmnxOtuIfEntry 11 }
 
 tmnxOtuIfHoldTimeDown            OBJECT-TYPE
     SYNTAX      Unsigned32 (0..100)
     UNITS       "100s of milliseconds"
     MAX-ACCESS  read-create
-    STATUS      obsolete 
+    STATUS      obsolete
     DESCRIPTION
         "The value of tmnxOtuIfHoldTimeDown is used to configure the hold-timer
          for link down event dampening. This guards against reporting excessive
@@ -556,8 +555,8 @@ tmnxOtuIfHoldTimeDown            OBJECT-TYPE
 
          A value of zero (0) indicates that an up transition is reported
          immediately."
-     DEFVAL { 0 }
-     ::= { tmnxOtuIfEntry 12 }
+    DEFVAL      { 0 }
+    ::= { tmnxOtuIfEntry 12 }
 
 tmnxOtuIfSmTtiTxMode             OBJECT-TYPE
     SYNTAX      TmnxOtuTtiMode
@@ -582,9 +581,9 @@ tmnxOtuIfSmTtiTx                 OBJECT-TYPE
          (TTI) for the Section Monitoring (SM) in the OTU overhead. This
          identifier can be a string or a non-printable sequence of bytes.
 
-         Specifying a one octet string with the value '0xFF' along with
-         a tmnxOtuIfSmTtiTxMode set to the value of 'auto (0)' will reset
-         the TTI to the system generated value."
+         Specifying a one octet string with the value '0xFF' along with a
+         tmnxOtuIfSmTtiTxMode set to the value of 'auto (0)' will reset the TTI
+         to the system generated value."
     ::= { tmnxOtuIfEntry 14 }
 
 tmnxOtuIfSmTtiRx                 OBJECT-TYPE
@@ -602,15 +601,15 @@ tmnxOtuIfSmTtiExpMode            OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfSmTtiExpMode specifies the type of expected
-         Trail Trace Identifier (TTI) for the Section Monitoring (SM) in
-         the OTU overhead.
+         Trail Trace Identifier (TTI) for the Section Monitoring (SM) in the
+         OTU overhead.
 
          Specifying a tmnxOtuIfSmTtiExpMode value of 'auto (0)' along with
          tmnxOtuIfSmTtiExp set with a single octet of '0xFF' will revert the
          SM-TTI to the default which is 'all zeros' in tmnxOtuIfSmTtiExp."
     ::= { tmnxOtuIfEntry 16 }
 
-tmnxOtuIfSmTtiExpCopyRx    OBJECT-TYPE
+tmnxOtuIfSmTtiExpCopyRx          OBJECT-TYPE
     SYNTAX      TmnxActionType
     MAX-ACCESS  read-create
     STATUS      current
@@ -625,11 +624,11 @@ tmnxOtuIfSmTtiExp                OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfSmTtiExp specifies the Trail Trace Identifier
-         (TTI) for the Section Monitoring (SM) that is expected to be
-         received in the OTU overhead.
+         (TTI) for the Section Monitoring (SM) that is expected to be received
+         in the OTU overhead.
 
-         A mismatch of the received and the expected SM TTI will cause
-         an 'otuTim' alarm to be raised"
+         A mismatch of the received and the expected SM TTI will cause an
+         'otuTim' alarm to be raised"
     ::= { tmnxOtuIfEntry 18 }
 
 tmnxOtuIfPmTtiTxMode             OBJECT-TYPE
@@ -637,7 +636,7 @@ tmnxOtuIfPmTtiTxMode             OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfSmTtiTxMode specifies the type of Trail Trace
+        "The value of tmnxOtuIfPmTtiTxMode specifies the type of Trail Trace
          Identifier (TTI) for the Path Monitoring (PM) in the OTU overhead.
 
          Specifying a tmnxOtuIfPmTtiTxMode value of 'auto (0)' along with
@@ -655,9 +654,9 @@ tmnxOtuIfPmTtiTx                 OBJECT-TYPE
          (TTI) for the Path Monitoring (PM) in the OTU overhead. This
          identifier can be a string or a non-printable sequence of bytes.
 
-         Specifying a one octet string with the value '0xFF' along with
-         a tmnxOtuIfPmTtiTxMode set to the value of 'auto (0)' will reset
-         the TTI to the system generated value."
+         Specifying a one octet string with the value '0xFF' along with a
+         tmnxOtuIfPmTtiTxMode set to the value of 'auto (0)' will reset the TTI
+         to the system generated value."
     ::= { tmnxOtuIfEntry 20 }
 
 tmnxOtuIfPmTtiRx                 OBJECT-TYPE
@@ -675,15 +674,15 @@ tmnxOtuIfPmTtiExpMode            OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfPmTtiExpMode specifies the type of expected
-         Trail Trace Identifier (TTI) for the Path Monitoring (PM) in
-         the OTU overhead.
+         Trail Trace Identifier (TTI) for the Path Monitoring (PM) in the OTU
+         overhead.
 
          Specifying a tmnxOtuIfPmTtiExpMode value of 'auto (0)' along with
          tmnxOtuIfPmTtiExp set with a single octet of '0xFF' will revert the
          PM-TTI to the default which is 'all zeros' in tmnxOtuIfPmTtiExp."
     ::= { tmnxOtuIfEntry 22 }
 
-tmnxOtuIfPmTtiExpCopyRx    OBJECT-TYPE
+tmnxOtuIfPmTtiExpCopyRx          OBJECT-TYPE
     SYNTAX      TmnxActionType
     MAX-ACCESS  read-create
     STATUS      current
@@ -698,11 +697,11 @@ tmnxOtuIfPmTtiExp                OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfPmTtiExp indicates the Trail Trace Identifier
-         (TTI) for the Path Monitoring (PM) that is expected to be
-         received in the OTU overhead.
+         (TTI) for the Path Monitoring (PM) that is expected to be received in
+         the OTU overhead.
 
-         A mismatch of the received and the expected PM TTI will cause
-         an 'oduTim' alarm to be raised"
+         A mismatch of the received and the expected PM TTI will cause an
+         'oduTim' alarm to be raised"
     ::= { tmnxOtuIfEntry 24 }
 
 tmnxOtuIfPsiTtiTxMode            OBJECT-TYPE
@@ -710,9 +709,9 @@ tmnxOtuIfPsiTtiTxMode            OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfSmTtiTxMode specifies the type of Trail Trace
-         Identifier (TTI) for the Payload Structure Identifier (PSI) in
-         the OTU overhead.
+        "The value of tmnxOtuIfPsiTtiTxMode specifies the type of Trail Trace
+         Identifier (TTI) for the Payload Structure Identifier (PSI) in the OTU
+         overhead.
 
          Specifying a tmnxOtuIfPsiTtiTxMode value of 'auto (0)' along with
          tmnxOtuIfPsiTtiTx set with a single octet of '0xFF' will revert the
@@ -729,9 +728,9 @@ tmnxOtuIfPsiTtiTx                OBJECT-TYPE
          (TTI) for the Payload Structure Identifier (PSI) in the OTU overhead.
          This identifier can be a string or a non-printable sequence of bytes.
 
-         Specifying a one octet string with the value '0xFF' along with
-         a tmnxOtuIfPsiTtiTxMode set to the value of 'auto (0)' will reset
-         the PSI Trace to the system generated value."
+         Specifying a one octet string with the value '0xFF' along with a
+         tmnxOtuIfPsiTtiTxMode set to the value of 'auto (0)' will reset the
+         PSI Trace to the system generated value."
     ::= { tmnxOtuIfEntry 26 }
 
 tmnxOtuIfPsiTtiRx                OBJECT-TYPE
@@ -740,25 +739,25 @@ tmnxOtuIfPsiTtiRx                OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfPsiTtiRx indicates the Trail Trace Identifier
-         (TTI) for the Payload Structure Identifier (PSI) in the received
-         OTU overhead."
+         (TTI) for the Payload Structure Identifier (PSI) in the received OTU
+         overhead."
     ::= { tmnxOtuIfEntry 27 }
 
-tmnxOtuIfPsiTtiExpMode            OBJECT-TYPE
+tmnxOtuIfPsiTtiExpMode           OBJECT-TYPE
     SYNTAX      TmnxOtuTtiMode
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfPsiTtiExpMode specifies the type of expected
-         Trail Trace Identifier (TTI) Payload Structure Identifier (PSI) in
-         the OTU overhead.
+         Trail Trace Identifier (TTI) Payload Structure Identifier (PSI) in the
+         OTU overhead.
 
          Specifying a tmnxOtuIfPsiTtiExpMode value of 'auto (0)' along with
          tmnxOtuIfPsiTtiExp set with a single octet of '0xFF' will revert the
          PSI-TTI to the default which is 'all zeros' in tmnxOtuIfPsiTtiExp."
     ::= { tmnxOtuIfEntry 28 }
 
-tmnxOtuIfPsiTtiExpCopyRx    OBJECT-TYPE
+tmnxOtuIfPsiTtiExpCopyRx         OBJECT-TYPE
     SYNTAX      TmnxActionType
     MAX-ACCESS  read-create
     STATUS      current
@@ -773,11 +772,11 @@ tmnxOtuIfPsiTtiExp               OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfPsiTtiExp indicates the Trail Trace Identifier
-         (TTI) for the Payload Structure Identifier (PSI) that is expected
-         to be received in the OTU overhead.
+         (TTI) for the Payload Structure Identifier (PSI) that is expected to
+         be received in the OTU overhead.
 
-         A mismatch of the received and the expected PSI Trace will cause
-         an 'opuTim' alarm to be raised"
+         A mismatch of the received and the expected PSI Trace will cause an
+         'opuTim' alarm to be raised"
     ::= { tmnxOtuIfEntry 30 }
 
 tmnxOtuIfPsiPayloadTypeTx        OBJECT-TYPE
@@ -797,8 +796,8 @@ tmnxOtuIfPsiPayloadTypeRx        OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfPsiPayloadTypeRx indicates the Payload Type
-         in the received OPU PSI overhead."
+        "The value of tmnxOtuIfPsiPayloadTypeRx indicates the Payload Type in
+         the received OPU PSI overhead."
     ::= { tmnxOtuIfEntry 32 }
 
 tmnxOtuIfPsiPayloadTypeExp       OBJECT-TYPE
@@ -809,11 +808,11 @@ tmnxOtuIfPsiPayloadTypeExp       OBJECT-TYPE
         "The value of tmnxOtuIfPsiPayloadTypeExp indicates the Payload Type
          that is expected to be received in the OPU PSI overhead.
 
-         Specifying a value 'auto (0)' will provision the standard
-         defined payload type for the current OTU mode of operation.
+         Specifying a value 'auto (0)' will provision the standard defined
+         payload type for the current OTU mode of operation.
 
-         A mismatch of the received and the expected Payload type will cause
-         an 'opuPlm' alarm to be raised"
+         A mismatch of the received and the expected Payload type will cause an
+         'opuPlm' alarm to be raised"
     ::= { tmnxOtuIfEntry 33 }
 
 tmnxOtuIfGfpMappingEnable        OBJECT-TYPE
@@ -821,9 +820,9 @@ tmnxOtuIfGfpMappingEnable        OBJECT-TYPE
     MAX-ACCESS  not-accessible
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfGfpMappingEnable specifies whether or not
-         the GFP mapping mode of transporting 10GbE is enabled."
-    DEFVAL { false }
+        "The value of tmnxOtuIfGfpMappingEnable specifies whether or not the
+         GFP mapping mode of transporting 10GbE is enabled."
+    DEFVAL      { false }
     ::= { tmnxOtuIfEntry 34 }
 
 tmnxOtuIfAsyncMappingEnable      OBJECT-TYPE
@@ -831,13 +830,12 @@ tmnxOtuIfAsyncMappingEnable      OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfAsyncMappingEnable specifies whether or not
-         the Asynchronous mapping mode of transporting the OTU client
-         is enabled.
+        "The value of tmnxOtuIfAsyncMappingEnable specifies whether or not the
+         Asynchronous mapping mode of transporting the OTU client is enabled.
 
          When this value is set to false, the OTU client is client is mapped
          Synchronously."
-    DEFVAL { false }
+    DEFVAL      { false }
     ::= { tmnxOtuIfEntry 35 }
 
 tmnxOtuIfSmTimReaction           OBJECT-TYPE
@@ -845,19 +843,18 @@ tmnxOtuIfSmTimReaction           OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfSmTimReaction specifies the reaction
-         that should be taken in the event of a Section Monitor Trace
-         Inentifier Mismatch.
+        "The value of tmnxOtuIfSmTimReaction specifies the reaction that should
+         be taken in the event of a Section Monitor Trace Identifier Mismatch.
 
          Specifying a value 'none (0)' indicates that no reaction should occur
          and therefore the ingress data will be passed through in the event of
-         a Section Monitor Trace Indentifier mismatch.
+         a Section Monitor Trace Identifier mismatch.
 
          Specifying a value 'squelch-rx (1)' indicates that the incoming data
          will be squelched and therefore the ingress data will be blocked with
-         a maintenance signal in the event of a Section Monitor Trace 
-         Indentifier mismatch."
-    DEFVAL { none }
+         a maintenance signal in the event of a Section Monitor Trace
+         Identifier mismatch."
+    DEFVAL      { none }
     ::= { tmnxOtuIfEntry 36 }
 
 tmnxOtuIfPmTimReaction           OBJECT-TYPE
@@ -865,19 +862,18 @@ tmnxOtuIfPmTimReaction           OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfSmTimReaction specifies the reaction
-         that should be taken in the event of a Path Monitor Trace
-         Inentifier Mismatch.
+        "The value of tmnxOtuIfPmTimReaction specifies the reaction that should
+         be taken in the event of a Path Monitor Trace Identifier Mismatch.
 
          Specifying a value 'none (0)' indicates that no reaction should occur
          and therefore the ingress data will be passed through in the event of
-         a Path Monitor Trace Indentifier mismatch.
+         a Path Monitor Trace Identifier mismatch.
 
          Specifying a value 'squelch-rx (1)' indicates that the incoming data
          will be squelched and therefore the ingress data will be blocked with
-         a maintenance signal in the event of a Path Monitor Trace Indentifier
+         a maintenance signal in the event of a Path Monitor Trace Identifier
          mismatch."
-    DEFVAL { none }
+    DEFVAL      { none }
     ::= { tmnxOtuIfEntry 37 }
 
 tmnxOtuIfPsiTimReaction          OBJECT-TYPE
@@ -885,9 +881,9 @@ tmnxOtuIfPsiTimReaction          OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfSmTimReaction specifies the reaction
-         that should be taken in the event of a Payload Structure Identifier
-         Trace Mismatch.
+        "The value of tmnxOtuIfPsiTimReaction specifies the reaction that
+         should be taken in the event of a Payload Structure Identifier Trace
+         Mismatch.
 
          Specifying a value 'none (0)' indicates that no reaction should occur
          and therefore the ingress data will be passed through in the event of
@@ -897,7 +893,7 @@ tmnxOtuIfPsiTimReaction          OBJECT-TYPE
          will be squelched and therefore the ingress data will be blocked with
          a maintenance signal in the event of a Payload Structure Identifier
          Trace mismatch."
-    DEFVAL { none }
+    DEFVAL      { none }
     ::= { tmnxOtuIfEntry 38 }
 
 tmnxOtuIfPsiPlmReaction          OBJECT-TYPE
@@ -905,8 +901,8 @@ tmnxOtuIfPsiPlmReaction          OBJECT-TYPE
     MAX-ACCESS  read-create
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfSmTimReaction specifies the reaction
-         that should be taken in the event of a Payload Type mismatch.
+        "The value of tmnxOtuIfPsiPlmReaction specifies the reaction that
+         should be taken in the event of a Payload Type mismatch.
 
          Specifying a value 'none (0)' indicates that no reaction should occur
          and therefore the ingress data will be passed through in the event of
@@ -914,8 +910,8 @@ tmnxOtuIfPsiPlmReaction          OBJECT-TYPE
 
          Specifying a value 'squelch-rx (1)' indicates that the incoming data
          will be squelched and therefore the ingress data will be blocked with
-         a maintenance signal in the event of a Payload Type mismatch." 
-    DEFVAL { none }
+         a maintenance signal in the event of a Payload Type mismatch."
+    DEFVAL      { none }
     ::= { tmnxOtuIfEntry 39 }
 
 tmnxOtuIfFineGrBerTable          OBJECT-TYPE
@@ -938,11 +934,11 @@ tmnxOtuIfFineGrBerEntry          OBJECT-TYPE
          physical interface.
 
          For the coefficient MIB attributes, 10 represents 1.0 and 99
-         represents 9.9. The combination of the SF/SD threshold coefficient
-         and exponent form a number: coefficient x 10^-exponent; therefore,
-         by example, a tmnxOtuIfFineGrBerSfThresh value of 4 and a 
-         tmnxOtuIfFineGrBerSfThrCoef value of 32 forms 3.2 x 10^-4 or
-         3.2E-04 in scientific notation.
+         represents 9.9. The combination of the SF/SD threshold coefficient and
+         exponent form a number: coefficient x 10^-exponent; therefore, by
+         example, a tmnxOtuIfFineGrBerSfThresh value of 4 and a
+         tmnxOtuIfFineGrBerSfThrCoef value of 32 forms 3.2 x 10^-4 or 3.2E-04
+         in scientific notation.
 
          For a set request, the combination of the coefficient and exponent for
          an SD raise threshold must be a lower value than for the SF raise
@@ -951,22 +947,24 @@ tmnxOtuIfFineGrBerEntry          OBJECT-TYPE
 
          For a set request, the combination of the coefficient and exponent for
          a clear threshold must be a lower value than for the raise threshold;
-         otherwise, the set request will fail with error code inconsistentValue.
+         otherwise, the set request will fail with error code
+         inconsistentValue.
 
          The row exists only if the associated tmnxOtuIfEntry is active."
-    AUGMENTS { tmnxOtuIfEntry }
+    AUGMENTS    { tmnxOtuIfEntry }
     ::= { tmnxOtuIfFineGrBerTable 1 }
 
-TmnxOtuIfFineGrBerEntry          ::= SEQUENCE {
-    tmnxOtuIfFineGrBerSupported     TruthValue,
-    tmnxOtuIfFineGrBerSfThresh      Unsigned32,
-    tmnxOtuIfFineGrBerSdThresh      Unsigned32,
-    tmnxOtuIfFineGrBerSfThrCoef     Unsigned32,
-    tmnxOtuIfFineGrBerSdThrCoef     Unsigned32,
-    tmnxOtuIfFineGrBerSfThreshClr   Unsigned32,
-    tmnxOtuIfFineGrBerSdThreshClr   Unsigned32,
-    tmnxOtuIfFineGrBerSfThrClrCoef  Unsigned32,
-    tmnxOtuIfFineGrBerSdThrClrCoef  Unsigned32
+TmnxOtuIfFineGrBerEntry          ::= SEQUENCE
+{
+    tmnxOtuIfFineGrBerSupported      TruthValue,
+    tmnxOtuIfFineGrBerSfThresh       Unsigned32,
+    tmnxOtuIfFineGrBerSdThresh       Unsigned32,
+    tmnxOtuIfFineGrBerSfThrCoef      Unsigned32,
+    tmnxOtuIfFineGrBerSdThrCoef      Unsigned32,
+    tmnxOtuIfFineGrBerSfThreshClr    Unsigned32,
+    tmnxOtuIfFineGrBerSdThreshClr    Unsigned32,
+    tmnxOtuIfFineGrBerSfThrClrCoef   Unsigned32,
+    tmnxOtuIfFineGrBerSdThrClrCoef   Unsigned32
 }
 
 tmnxOtuIfFineGrBerSupported      OBJECT-TYPE
@@ -974,8 +972,8 @@ tmnxOtuIfFineGrBerSupported      OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfFineGrBerSupported indicates whether or not
-         fine granularity BER thresholds are supported on this OTU encapsulated
+        "The value of tmnxOtuIfFineGrBerSupported indicates whether or not fine
+         granularity BER thresholds are supported on this OTU encapsulated
          physical interface."
     ::= { tmnxOtuIfFineGrBerEntry 1 }
 
@@ -1002,7 +1000,7 @@ tmnxOtuIfFineGrBerSfThresh       OBJECT-TYPE
          7          | 100
          8          | 333
          9          | 1660"
-    DEFVAL { 5 }
+    DEFVAL      { 5 }
     ::= { tmnxOtuIfFineGrBerEntry 2 }
 
 tmnxOtuIfFineGrBerSdThresh       OBJECT-TYPE
@@ -1028,7 +1026,7 @@ tmnxOtuIfFineGrBerSdThresh       OBJECT-TYPE
          7          | 100
          8          | 333
          9          | 1660"
-    DEFVAL { 7 }
+    DEFVAL      { 7 }
     ::= { tmnxOtuIfFineGrBerEntry 3 }
 
 tmnxOtuIfFineGrBerSfThrCoef      OBJECT-TYPE
@@ -1037,10 +1035,10 @@ tmnxOtuIfFineGrBerSfThrCoef      OBJECT-TYPE
     MAX-ACCESS  read-write
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfFineGrBerSfThrCoef specifies the factor used
-         to fine tune the SF BER threshold (tmnxOtuIfFineGrBerSfThresh) for
-         SF alarm raising."
-    DEFVAL { 10 }
+        "The value of tmnxOtuIfFineGrBerSfThrCoef specifies the factor used to
+         fine tune the SF BER threshold (tmnxOtuIfFineGrBerSfThresh) for SF
+         alarm raising."
+    DEFVAL      { 10 }
     ::= { tmnxOtuIfFineGrBerEntry 4 }
 
 tmnxOtuIfFineGrBerSdThrCoef      OBJECT-TYPE
@@ -1049,10 +1047,10 @@ tmnxOtuIfFineGrBerSdThrCoef      OBJECT-TYPE
     MAX-ACCESS  read-write
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfFineGrBerSdThrCoef specifies the factor used
-         to fine tune the SD BER threshold (tmnxOtuIfFineGrBerSdThresh) for
-         SD alarm raising."
-    DEFVAL { 10 }
+        "The value of tmnxOtuIfFineGrBerSdThrCoef specifies the factor used to
+         fine tune the SD BER threshold (tmnxOtuIfFineGrBerSdThresh) for SD
+         alarm raising."
+    DEFVAL      { 10 }
     ::= { tmnxOtuIfFineGrBerEntry 5 }
 
 tmnxOtuIfFineGrBerSfThreshClr    OBJECT-TYPE
@@ -1064,7 +1062,7 @@ tmnxOtuIfFineGrBerSfThreshClr    OBJECT-TYPE
         "The value of tmnxOtuIfFineGrBerSfThreshClr specifies the BER threshold
          used to determine when to clear fecSf alarms (notification
          tmnxOtuIfAlarmNotification)."
-    DEFVAL { 6 }
+    DEFVAL      { 6 }
     ::= { tmnxOtuIfFineGrBerEntry 6 }
 
 tmnxOtuIfFineGrBerSdThreshClr    OBJECT-TYPE
@@ -1076,7 +1074,7 @@ tmnxOtuIfFineGrBerSdThreshClr    OBJECT-TYPE
         "The value of tmnxOtuIfFineGrBerSdThreshClr specifies the BER threshold
          used to determine when to clear fecSd alarms (notification
          tmnxOtuIfAlarmNotification)."
-    DEFVAL { 8 }
+    DEFVAL      { 8 }
     ::= { tmnxOtuIfFineGrBerEntry 7 }
 
 tmnxOtuIfFineGrBerSfThrClrCoef   OBJECT-TYPE
@@ -1088,7 +1086,7 @@ tmnxOtuIfFineGrBerSfThrClrCoef   OBJECT-TYPE
         "The value of tmnxOtuIfFineGrBerSfThrClrCoef specifies the factor used
          to fine tune the SF BER threshold (tmnxOtuIfFineGrBerSfThreshClr) for
          SF alarm clearing."
-    DEFVAL { 10 }
+    DEFVAL      { 10 }
     ::= { tmnxOtuIfFineGrBerEntry 8 }
 
 tmnxOtuIfFineGrBerSdThrClrCoef   OBJECT-TYPE
@@ -1100,23 +1098,18 @@ tmnxOtuIfFineGrBerSdThrClrCoef   OBJECT-TYPE
         "The value of tmnxOtuIfFineGrBerSdThrClrCoef specifies the factor used
          to fine tune the SD BER threshold (tmnxOtuIfFineGrBerSdThreshClr) for
          SD alarm clearing."
-    DEFVAL { 10 }
+    DEFVAL      { 10 }
     ::= { tmnxOtuIfFineGrBerEntry 9 }
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Statistics Objects
---
 
---
---  Raw Statistics
---
+tmnxOtuStatistics                OBJECT IDENTIFIER ::= { tmnxOtuObjs 2 }
+
 tmnxOtuIfRawStatsTable           OBJECT-TYPE
     SYNTAX      SEQUENCE OF TmnxOtuIfRawStatsEntry
     MAX-ACCESS  not-accessible
     STATUS      current
     DESCRIPTION
-        "The tmnxOtuIfRawStatsTable consists of the raw statistics
-         associated with the OTU interfaces contained in the tmnxOtuIfTable."
+        "The tmnxOtuIfRawStatsTable consists of the raw statistics associated
+         with the OTU interfaces contained in the tmnxOtuIfTable."
     ::= { tmnxOtuStatistics 1 }
 
 tmnxOtuIfRawStatsEntry           OBJECT-TYPE
@@ -1124,15 +1117,14 @@ tmnxOtuIfRawStatsEntry           OBJECT-TYPE
     MAX-ACCESS  not-accessible
     STATUS      current
     DESCRIPTION
-        "The tmnxOtuIfRawStatsEntry stores the statistics for an individual
-         OTU interface. tmnxOtuIfRawStatsEntry rows are created and destroyed
-         by the system when rows are added or removed in the tmnxOtuIfTable."
-    INDEX {
-             ifIndex
-          }
+        "The tmnxOtuIfRawStatsEntry stores the statistics for an individual OTU
+         interface. tmnxOtuIfRawStatsEntry rows are created and destroyed by
+         the system when rows are added or removed in the tmnxOtuIfTable."
+    INDEX       { ifIndex }
     ::= { tmnxOtuIfRawStatsTable 1 }
 
-TmnxOtuIfRawStatsEntry           ::= SEQUENCE {
+TmnxOtuIfRawStatsEntry           ::= SEQUENCE
+{
     tmnxOtuIfRawStatsFECCorrZeros    Counter32,
     tmnxOtuIfRawStatsOFFECCorrZeros  Counter32,
     tmnxOtuIfRawStatsHCFECCorrZeros  Counter64,
@@ -1214,7 +1206,7 @@ tmnxOtuIfRawStatsOFFECCorrOnes   OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfRawStatsFECCorrOnes indicates the number of
+        "The value of tmnxOtuIfRawStatsOFFECCorrOnes indicates the number of
          times the tmnxOtuIfRawStatsFECCorrOnes overflowed."
     ::= { tmnxOtuIfRawStatsEntry 5 }
 
@@ -1224,8 +1216,8 @@ tmnxOtuIfRawStatsHCFECCorrOnes   OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfRawStatsFECCorrOnes indicates the High Capacity
-         number of Forward Error Correction (FEC) corrected ones."
+        "The value of tmnxOtuIfRawStatsHCFECCorrOnes indicates the High
+         Capacity number of Forward Error Correction (FEC) corrected ones."
     ::= { tmnxOtuIfRawStatsEntry 6 }
 
 tmnxOtuIfRawStatsFECUncorrSR     OBJECT-TYPE
@@ -1396,9 +1388,8 @@ tmnxOtuIfRawStatsHCPMBEI         OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "The value of tmnxOtuIfRawStatsPMBEI indicates the High Capacity
-         number of Path Monitoring (PM) Backward Error Indication (BEI)
-         errors."
+        "The value of tmnxOtuIfRawStatsHCPMBEI indicates the High Capacity
+         number of Path Monitoring (PM) Backward Error Indication (BEI) errors."
     ::= { tmnxOtuIfRawStatsEntry 23 }
 
 tmnxOtuIfRawStatsPMSES           OBJECT-TYPE
@@ -1478,7 +1469,7 @@ tmnxOtuIfRawStatsNPJ             OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfRawStatsNPJ indicates the number of Negative
-         Pointer justifications that occured during the asynchronous demapping
+         Pointer justifications that occurred during the asynchronous demapping
          of the received payload inside the OTU frame."
     ::= { tmnxOtuIfRawStatsEntry 31 }
 
@@ -1489,7 +1480,7 @@ tmnxOtuIfRawStatsPPJ             OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfRawStatsPPJ indicates the number of Positive
-         Pointer justifications that occured during the asynchronous demapping
+         Pointer justifications that occurred during the asynchronous demapping
          of the received payload inside the OTU frame."
     ::= { tmnxOtuIfRawStatsEntry 32 }
 
@@ -1503,9 +1494,6 @@ tmnxOtuIfRawStatsElapsedSec      OBJECT-TYPE
          Elapsed seconds since the last OTU raw statistics clearing."
     ::= { tmnxOtuIfRawStatsEntry 33 }
 
---
---  Interval Statistics
---
 tmnxOtuIfIntervalStatsTable      OBJECT-TYPE
     SYNTAX      SEQUENCE OF TmnxOtuIfIntervalStatsEntry
     MAX-ACCESS  not-accessible
@@ -1521,16 +1509,17 @@ tmnxOtuIfIntervalStatsEntry      OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The tmnxOtuIfIntervalStatsEntry stores the statistics for an
-         individual OTU interface per row. tmnxOtuIfIntervalStatsEntry
-         objects are created and destroyed by the system when rows are
-         added or removed in the tmnxOtuIfTable."
-    INDEX {
-            ifIndex,
-            tmnxOtuIfIntvlStatsIndex
-          }
+         individual OTU interface per row. tmnxOtuIfIntervalStatsEntry objects
+         are created and destroyed by the system when rows are added or removed
+         in the tmnxOtuIfTable."
+    INDEX       {
+        ifIndex,
+        tmnxOtuIfIntvlStatsIndex
+    }
     ::= { tmnxOtuIfIntervalStatsTable 1 }
 
-TmnxOtuIfIntervalStatsEntry      ::= SEQUENCE {
+TmnxOtuIfIntervalStatsEntry      ::= SEQUENCE
+{
     tmnxOtuIfIntvlStatsIndex         Unsigned32,
     tmnxOtuIfIntvlStatsIsValid       TruthValue,
     tmnxOtuIfIntvlStatsFECCorrZeros  Counter32,
@@ -1555,28 +1544,28 @@ TmnxOtuIfIntervalStatsEntry      ::= SEQUENCE {
 }
 
 tmnxOtuIfIntvlStatsIndex         OBJECT-TYPE
-    SYNTAX      Unsigned32 (0|1..96)
+    SYNTAX      Unsigned32 (0 | 1..96)
     MAX-ACCESS  not-accessible
     STATUS      current
     DESCRIPTION
         "The tmnxOtuIfIntvlStatsIndex specifies the 15 minute statistic
          snap-shot for the OTU interface. The interval index value of 0
-         specifies the current raw 15 minute statistic window. The value
-         of one indicates the most recently completed 15 minute interval
-         statistics snap-shot. The interval identified by N is the interval
-         immediately preceding the one identified by N-1."
-   ::= { tmnxOtuIfIntervalStatsEntry 1 }
+         specifies the current raw 15 minute statistic window. The value of one
+         indicates the most recently completed 15 minute interval statistics
+         snap-shot. The interval identified by N is the interval immediately
+         preceding the one identified by N-1."
+    ::= { tmnxOtuIfIntervalStatsEntry 1 }
 
 tmnxOtuIfIntvlStatsIsValid       OBJECT-TYPE
-   SYNTAX       TruthValue
-   MAX-ACCESS   read-only
-   STATUS       current
-   DESCRIPTION
-       "The value of tmnxOtuIfIntvlStatsIsValid indicates whether or not the
-        current statistics interval is valid.
+    SYNTAX      TruthValue
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of tmnxOtuIfIntvlStatsIsValid indicates whether or not the
+         current statistics interval is valid.
 
-        The raw interval (tmnxOtuIfIntvlStatsIndex set to 0) is always false."
-   ::= { tmnxOtuIfIntervalStatsEntry 2 }
+         The raw interval (tmnxOtuIfIntvlStatsIndex set to 0) is always false."
+    ::= { tmnxOtuIfIntervalStatsEntry 2 }
 
 tmnxOtuIfIntvlStatsFECCorrZeros  OBJECT-TYPE
     SYNTAX      Counter32
@@ -1708,7 +1697,6 @@ tmnxOtuIfIntvlStatsSMES          OBJECT-TYPE
          Monitoring (SM) Errored Seconds (ES)."
     ::= { tmnxOtuIfIntervalStatsEntry 15 }
 
-
 tmnxOtuIfIntvlStatsSMUAS         OBJECT-TYPE
     SYNTAX      Counter32
     UNITS       "seconds"
@@ -1746,7 +1734,7 @@ tmnxOtuIfIntvlStatsNPJ           OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfIntvlStatsNPJ indicates the number of Negative
-         Pointer justifications that occured during the asynchronous demapping
+         Pointer justifications that occurred during the asynchronous demapping
          of the received payload inside the OTU frame."
     ::= { tmnxOtuIfIntervalStatsEntry 19 }
 
@@ -1757,7 +1745,7 @@ tmnxOtuIfIntvlStatsPPJ           OBJECT-TYPE
     STATUS      current
     DESCRIPTION
         "The value of tmnxOtuIfIntvlStatsPPJ indicates the number of Positive
-         Pointer justifications that occured during the asynchronous demapping
+         Pointer justifications that occurred during the asynchronous demapping
          of the received payload inside the OTU frame."
     ::= { tmnxOtuIfIntervalStatsEntry 20 }
 
@@ -1771,35 +1759,15 @@ tmnxOtuIfIntvlStatsElapsedSec    OBJECT-TYPE
          Elapsed seconds in the current statistics interval."
     ::= { tmnxOtuIfIntervalStatsEntry 21 }
 
+tmnxOtuConformance               OBJECT IDENTIFIER ::= { tmnxSRConfs 62 }
 
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Notification Objects
---
-
-tmnxOtuIfAlarmNotification       NOTIFICATION-TYPE
-    OBJECTS     {
-                    tmnxOtuIfAlarmState
-                }
-    STATUS      current
-    DESCRIPTION
-        "The tmnxOtuIfAlarmNotification notification indicates that an
-         OTU interface has experienced either a raising or clearing of an
-         alarm in the Forward Error Correction (FEC), Section Monitoring (SM),
-         Path Monitoring (PM) or Payload Monitoring (PSI) fields of the OTU
-         frame."
-    ::= { tmnxOtuNotifications 1 }
-
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Conformance Statements
---
+tmnxOtuCompliances               OBJECT IDENTIFIER ::= { tmnxOtuConformance 1 }
 
 tmnxOtuCompliance                MODULE-COMPLIANCE
     STATUS      obsolete
     DESCRIPTION
         "The compliance statement for revision 1.0 of TIMETRA-OTU-MIB."
-    MODULE -- this module
+    MODULE
         MANDATORY-GROUPS {
             tmnxOtuIfBaseConfigGroup,
             tmnxOtuIfBaseConfigGroupV8v0,
@@ -1811,13 +1779,13 @@ tmnxOtuCompliance                MODULE-COMPLIANCE
             tmnxOtuStatsGroupV8v0,
             tmnxOtuNotificationGroup
         }
-     ::= { tmnxOtuCompliances 1 }
+    ::= { tmnxOtuCompliances 1 }
 
 tmnxOtuComplianceV8v0            MODULE-COMPLIANCE
     STATUS      obsolete
     DESCRIPTION
         "The compliance statement for revision 8.0 of TIMETRA-OTU-MIB."
-    MODULE -- this module
+    MODULE
         MANDATORY-GROUPS {
             tmnxOtuIfBaseConfigGroupV8v0,
             tmnxOtuIfSMGroup,
@@ -1829,7 +1797,7 @@ tmnxOtuComplianceV8v0            MODULE-COMPLIANCE
             tmnxOtuNotificationGroup,
             tmnxOtuObsoleteV8v0Group
         }
-     ::= { tmnxOtuCompliances 2 }
+    ::= { tmnxOtuCompliances 2 }
 
 tmnxOtuComplianceV11v0           MODULE-COMPLIANCE
     STATUS      current
@@ -1849,15 +1817,12 @@ tmnxOtuComplianceV11v0           MODULE-COMPLIANCE
             tmnxOtuObsoleteV8v0Group,
             tmnxOtuIfFineGrBerGroupV11v0
         }
-     ::= { tmnxOtuCompliances 3 }
+    ::= { tmnxOtuCompliances 3 }
 
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Object Groups (Initial Release)
---
+tmnxOtuGroups                    OBJECT IDENTIFIER ::= { tmnxOtuConformance 2 }
 
 tmnxOtuIfBaseConfigGroup         OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfTableLastChanged,
         tmnxOtuIfRowStatus,
         tmnxOtuIfTimeStamp,
@@ -1878,7 +1843,7 @@ tmnxOtuIfBaseConfigGroup         OBJECT-GROUP
     ::= { tmnxOtuGroups 1 }
 
 tmnxOtuIfSMGroup                 OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfSmTtiTxMode,
         tmnxOtuIfSmTtiTx,
         tmnxOtuIfSmTtiRx
@@ -1890,7 +1855,7 @@ tmnxOtuIfSMGroup                 OBJECT-GROUP
     ::= { tmnxOtuGroups 2 }
 
 tmnxOtuStatsGroup                OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfRawStatsFECCorrZeros,
         tmnxOtuIfRawStatsOFFECCorrZeros,
         tmnxOtuIfRawStatsHCFECCorrZeros,
@@ -1939,24 +1904,16 @@ tmnxOtuNotificationGroup         NOTIFICATION-GROUP
     }
     STATUS      current
     DESCRIPTION
-        "The group of notifications supporting management of OTU interfaces
-         for the 7x50."
+        "The group of notifications supporting management of OTU interfaces for
+         the 7x50."
     ::= { tmnxOtuGroups 4 }
 
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Object Groups (Release 7.0)
---
-tmnxOtuGroupsV7v0                OBJECT IDENTIFIER  ::= { tmnxOtuGroups 5 }
+tmnxOtuGroupsV7v0                OBJECT IDENTIFIER ::= { tmnxOtuGroups 5 }
 
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Object Groups (Release 8.0)
---
-tmnxOtuGroupsV8v0                OBJECT IDENTIFIER  ::= { tmnxOtuGroups 6 }
+tmnxOtuGroupsV8v0                OBJECT IDENTIFIER ::= { tmnxOtuGroups 6 }
 
 tmnxOtuIfBaseConfigGroupV8v0     OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfTableLastChanged,
         tmnxOtuIfRowStatus,
         tmnxOtuIfTimeStamp,
@@ -1967,11 +1924,9 @@ tmnxOtuIfBaseConfigGroupV8v0     OBJECT-GROUP
         tmnxOtuIfOtu2LanDataRate,
         tmnxOtuIfCfgAlarms,
         tmnxOtuIfAlarmState,
-        -- tmnxOtuIfHoldTimeUp,
-        -- tmnxOtuIfHoldTimeDown,
         tmnxOtuIfOtuOperDataRate,
         tmnxOtuIfAsyncMappingEnable
-   }
+    }
     STATUS      current
     DESCRIPTION
         "The group of additional objects for management of OTU interfaces for
@@ -1979,7 +1934,7 @@ tmnxOtuIfBaseConfigGroupV8v0     OBJECT-GROUP
     ::= { tmnxOtuGroupsV8v0 1 }
 
 tmnxOtuIfSMGroupV8v0             OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfSmTtiTxMode,
         tmnxOtuIfSmTtiTx,
         tmnxOtuIfSmTtiRx,
@@ -1995,7 +1950,7 @@ tmnxOtuIfSMGroupV8v0             OBJECT-GROUP
     ::= { tmnxOtuGroupsV8v0 2 }
 
 tmnxOtuStatsGroupV8v0            OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfRawStatsFECES,
         tmnxOtuIfRawStatsFECUAS,
         tmnxOtuIfRawStatsSMES,
@@ -2022,7 +1977,7 @@ tmnxOtuStatsGroupV8v0            OBJECT-GROUP
     ::= { tmnxOtuGroupsV8v0 3 }
 
 tmnxOtuIfPMGroupV8v0             OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfPmTtiTxMode,
         tmnxOtuIfPmTtiTx,
         tmnxOtuIfPmTtiRx,
@@ -2038,7 +1993,7 @@ tmnxOtuIfPMGroupV8v0             OBJECT-GROUP
     ::= { tmnxOtuGroupsV8v0 4 }
 
 tmnxOtuIfPSIGroupV8v0            OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfPsiTtiTxMode,
         tmnxOtuIfPsiTtiTx,
         tmnxOtuIfPsiTtiRx,
@@ -2053,29 +2008,25 @@ tmnxOtuIfPSIGroupV8v0            OBJECT-GROUP
     }
     STATUS      current
     DESCRIPTION
-        "The group of objects for management of Payload Structure Identifier
-         of OTU interfaces for the 7x50 in Release 8.0."
+        "The group of objects for management of Payload Structure Identifier of
+         OTU interfaces for the 7x50 in Release 8.0."
     ::= { tmnxOtuGroupsV8v0 5 }
 
 tmnxOtuObsoleteV8v0Group         OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfHoldTimeUp,
         tmnxOtuIfHoldTimeDown
     }
     STATUS      current
     DESCRIPTION
-        "The group of objects that were made obsolete for the 7x50 in
-         Release 8.0."
+        "The group of objects that were made obsolete for the 7x50 in Release
+         8.0."
     ::= { tmnxOtuGroupsV8v0 6 }
 
---%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
---
---  TIMETRA-OTU-MIB Object Groups (Release 11.0)
---
 tmnxOtuGroupsV11v0               OBJECT IDENTIFIER ::= { tmnxOtuGroups 7 }
 
 tmnxOtuIfFineGrBerGroupV11v0     OBJECT-GROUP
-    OBJECTS {
+    OBJECTS     {
         tmnxOtuIfFineGrBerSupported,
         tmnxOtuIfFineGrBerSfThresh,
         tmnxOtuIfFineGrBerSdThresh,
@@ -2088,8 +2039,27 @@ tmnxOtuIfFineGrBerGroupV11v0     OBJECT-GROUP
     }
     STATUS      current
     DESCRIPTION
-        "The group of objects introduced in Release 11.0 for OTU interface
-         fine granularity pre-FEC BER SD and SF threshold information on
-         Alcatel-Lucent SROS systems."
+        "The group of objects introduced in Release 11.0 for OTU interface fine
+         granularity pre-FEC BER SD and SF threshold information on Nokia SROS
+         systems."
     ::= { tmnxOtuGroupsV11v0 1 }
+
+tmnxOtuGroupsV13v0               OBJECT IDENTIFIER ::= { tmnxOtuGroups 8 }
+
+tmnxOtuNotifyPrefix              OBJECT IDENTIFIER ::= { tmnxSRNotifyPrefix 62 }
+
+tmnxOtuNotifications             OBJECT IDENTIFIER ::= { tmnxOtuNotifyPrefix 0 }
+
+tmnxOtuIfAlarmNotification       NOTIFICATION-TYPE
+    OBJECTS     {
+        tmnxOtuIfAlarmState
+    }
+    STATUS      current
+    DESCRIPTION
+        "The tmnxOtuIfAlarmNotification notification indicates that an OTU
+         interface has experienced either a raising or clearing of an alarm in
+         the Forward Error Correction (FEC), Section Monitoring (SM), Path
+         Monitoring (PM) or Payload Monitoring (PSI) fields of the OTU frame."
+    ::= { tmnxOtuNotifications 1 }
+
 END

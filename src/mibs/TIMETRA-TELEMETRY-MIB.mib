@@ -1,0 +1,308 @@
+TIMETRA-TELEMETRY-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    CounterBasedGauge64
+                                                         FROM HCNUM-TC
+    InetAddress, InetAddressType,
+    InetPortNumber
+                                                         FROM INET-ADDRESS-MIB
+    MODULE-COMPLIANCE, OBJECT-GROUP
+                                                         FROM SNMPv2-CONF
+    Counter32, Counter64, MODULE-IDENTITY,
+    OBJECT-TYPE, Unsigned32
+                                                         FROM SNMPv2-SMI
+    timetraSRMIBModules, tmnxSRConfs,
+    tmnxSRObjs
+                                                         FROM TIMETRA-GLOBAL-MIB
+    TNamedItem
+                                                         FROM TIMETRA-TC-MIB
+    ;
+
+timetraTelemetryMIBModule        MODULE-IDENTITY
+    LAST-UPDATED "201610110000Z"
+    ORGANIZATION "Nokia"
+    CONTACT-INFO
+        "Nokia SROS Support
+         Web: http://www.nokia.com"
+    DESCRIPTION
+        "This document is the SNMP MIB module for the Nokia SROS implementation
+         of Telemetry.
+
+         Copyright 2003-2017 Nokia. All rights reserved. Reproduction of this
+         document is authorized on the condition that the foregoing copyright
+         notice is included.
+
+         This SNMP MIB module (Specification) embodies Nokia's
+         proprietary intellectual property.  Nokia retains all
+         title and ownership in the Specification, including any
+         revisions.
+
+         Nokia grants all interested parties a non-exclusive license to use and
+         distribute an unmodified copy of this Specification in connection with
+         management of Nokia products, and without fee, provided this copyright
+         notice and license appear on all copies.
+
+         This Specification is supplied `as is', and Nokia makes no warranty,
+         either express or implied, as to the use, operation, condition, or
+         performance of the Specification."
+
+    REVISION    "201610110000Z"
+    DESCRIPTION
+        "Rev 0.1                11 Oct 2016 00:00
+         Initial version of the TIMETRA-TELEMETRY-MIB."
+
+    ::= { timetraSRMIBModules 110 }
+
+tmnxTelemetryObjs                OBJECT IDENTIFIER ::= { tmnxSRObjs 110 }
+
+tmnxTelemetryStatsObjs           OBJECT IDENTIFIER ::= { tmnxTelemetryObjs 1 }
+
+tmnxTlmtryGrpcSubscrTable        OBJECT-TYPE
+    SYNTAX      SEQUENCE OF TmnxTlmtryGrpcSubscrEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "The table tmnxTlmtryGrpcSubscrTable contains read-only information
+         pertaining to telemetry subscriptions over gRPC Subscribe RPC.
+
+         gRPC Subscribe RPC is defined in reference protobuf file
+         openconfig.proto, version from July 22 2016."
+    REFERENCE
+        "http://github.com/openconfig/reference"
+    ::= { tmnxTelemetryStatsObjs 1 }
+
+tmnxTlmtryGrpcSubscrEntry        OBJECT-TYPE
+    SYNTAX      TmnxTlmtryGrpcSubscrEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "Each row entry represents a single telemetry subscription over gRPC
+         Subscribe RPC.
+
+         Rows in the table tmnxTlmtryGrpcSubscrEntry are automatically created
+         by the system at execution of a gRPC Subscribe RPC and destroyed at
+         RPC termination."
+    INDEX       { tmnxTlmtryGrpcSubId }
+    ::= { tmnxTlmtryGrpcSubscrTable 1 }
+
+TmnxTlmtryGrpcSubscrEntry        ::= SEQUENCE
+{
+    tmnxTlmtryGrpcSubId              Unsigned32,
+    tmnxTlmtryGrpcSubUserName        TNamedItem,
+    tmnxTlmtryGrpcSubDstIpAddType    InetAddressType,
+    tmnxTlmtryGrpcSubDstIpAddress    InetAddress,
+    tmnxTlmtryGrpcSubDestPort        InetPortNumber
+}
+
+tmnxTlmtryGrpcSubId              OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubId indicates system generated
+         unique subscription ID."
+    ::= { tmnxTlmtryGrpcSubscrEntry 1 }
+
+tmnxTlmtryGrpcSubUserName        OBJECT-TYPE
+    SYNTAX      TNamedItem
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubUserName indicates the name
+         of a system user who initiated the telemetry subscription."
+    ::= { tmnxTlmtryGrpcSubscrEntry 2 }
+
+tmnxTlmtryGrpcSubDstIpAddType    OBJECT-TYPE
+    SYNTAX      InetAddressType
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubDstIpAddType indicates the
+         type of IP address stored in tmnxTlmtryGrpcSubDstIpAddress. The value
+         can be either 'unknown', 'ipv4' or 'ipv6."
+    ::= { tmnxTlmtryGrpcSubscrEntry 3 }
+
+tmnxTlmtryGrpcSubDstIpAddress    OBJECT-TYPE
+    SYNTAX      InetAddress (SIZE (0|4|16))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubDstIpAddress indicates the
+         remote IP address of the telemetry collector."
+    ::= { tmnxTlmtryGrpcSubscrEntry 4 }
+
+tmnxTlmtryGrpcSubDestPort        OBJECT-TYPE
+    SYNTAX      InetPortNumber
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubDestPort indicates the remote
+         port of the telemetry collector."
+    ::= { tmnxTlmtryGrpcSubscrEntry 5 }
+
+tmnxTlmtryGrpcSubscrPathTable    OBJECT-TYPE
+    SYNTAX      SEQUENCE OF TmnxTlmtryGrpcSubscrPathEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "A table of all paths in all telemetry subscriptions over gRPC
+         Subscribe RPC."
+    ::= { tmnxTelemetryStatsObjs 2 }
+
+tmnxTlmtryGrpcSubscrPathEntry    OBJECT-TYPE
+    SYNTAX      TmnxTlmtryGrpcSubscrPathEntry
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "Information about a particular subscription path. Every subscription
+         can have one or more paths."
+    INDEX       {
+        tmnxTlmtryGrpcSubId,
+        tmnxTlmtryGrpcSubPathIndex
+    }
+    ::= { tmnxTlmtryGrpcSubscrPathTable 1 }
+
+TmnxTlmtryGrpcSubscrPathEntry    ::= SEQUENCE
+{
+    tmnxTlmtryGrpcSubPathIndex       Unsigned32,
+    tmnxTlmtryGrpcSubPathPath        OCTET STRING,
+    tmnxTlmtryGrpcSubPathInterval    CounterBasedGauge64,
+    tmnxTlmtryGrpcSubPathFinisColCnt Counter64,
+    tmnxTlmtryGrpcSubPathDeferColCnt Counter64,
+    tmnxTlmtryGrpcSubPathTotColTime  Counter64,
+    tmnxTlmtryGrpcSubPathMinColTime  Counter32,
+    tmnxTlmtryGrpcSubPathAvgColTime  Counter32,
+    tmnxTlmtryGrpcSubPathMaxColTime  Counter32
+}
+
+tmnxTlmtryGrpcSubPathIndex       OBJECT-TYPE
+    SYNTAX      Unsigned32
+    MAX-ACCESS  not-accessible
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathIndex indicates the index
+         of the path. Every subscription can have multiple paths, therefore
+         every path is identified by the tmnxTlmtryGrpcSubId and
+         tmnxTlmtryGrpcSubPathIndex."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 1 }
+
+tmnxTlmtryGrpcSubPathPath        OBJECT-TYPE
+    SYNTAX      OCTET STRING (SIZE (1..1024))
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathPath indicates the actual
+         subscribed path.
+
+         Every path in single subscription must be unique."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 2 }
+
+tmnxTlmtryGrpcSubPathInterval    OBJECT-TYPE
+    SYNTAX      CounterBasedGauge64
+    UNITS       "milliseconds"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathInterval indicates the
+         streaming interval of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 3 }
+
+tmnxTlmtryGrpcSubPathFinisColCnt OBJECT-TYPE
+    SYNTAX      Counter64
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathFinisColCnt indicates the
+         count of finished collection samples of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 4 }
+
+tmnxTlmtryGrpcSubPathDeferColCnt OBJECT-TYPE
+    SYNTAX      Counter64
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathDeferColCnt indicates the
+         count of deferred collection samples of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 5 }
+
+tmnxTlmtryGrpcSubPathTotColTime  OBJECT-TYPE
+    SYNTAX      Counter64
+    UNITS       "milliseconds"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathTotColTime indicates the
+         total collection time of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 6 }
+
+tmnxTlmtryGrpcSubPathMinColTime  OBJECT-TYPE
+    SYNTAX      Counter32
+    UNITS       "milliseconds"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathMinColTime indicates the
+         minimum collection time of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 7 }
+
+tmnxTlmtryGrpcSubPathAvgColTime  OBJECT-TYPE
+    SYNTAX      Counter32
+    UNITS       "milliseconds"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathAvgColTime indicates the
+         average collection time of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 8 }
+
+tmnxTlmtryGrpcSubPathMaxColTime  OBJECT-TYPE
+    SYNTAX      Counter32
+    UNITS       "milliseconds"
+    MAX-ACCESS  read-only
+    STATUS      current
+    DESCRIPTION
+        "The value of the object tmnxTlmtryGrpcSubPathMaxColTime indicates the
+         maximum collection time of a path."
+    ::= { tmnxTlmtryGrpcSubscrPathEntry 9 }
+
+tmnxTelemetryConformance         OBJECT IDENTIFIER ::= { tmnxSRConfs 110 }
+
+tmnxTelemetryCompliances         OBJECT IDENTIFIER ::= { tmnxTelemetryConformance 1 }
+
+tmnxTelemetryCompliance          MODULE-COMPLIANCE
+    STATUS      current
+    DESCRIPTION
+        "The compliance statement for the management of telemetry on Nokia SROS
+         series systems."
+    MODULE
+        MANDATORY-GROUPS {
+            tmnxTelemetryStateV15Group
+        }
+    ::= { tmnxTelemetryCompliances 1 }
+
+tmnxTelemetryGroups              OBJECT IDENTIFIER ::= { tmnxTelemetryConformance 2 }
+
+tmnxTelemetryInitialGroups       OBJECT IDENTIFIER ::= { tmnxTelemetryGroups 1 }
+
+tmnxTelemetryStateV15Group       OBJECT-GROUP
+    OBJECTS     {
+        tmnxTlmtryGrpcSubUserName,
+        tmnxTlmtryGrpcSubDstIpAddType,
+        tmnxTlmtryGrpcSubDstIpAddress,
+        tmnxTlmtryGrpcSubDestPort,
+        tmnxTlmtryGrpcSubPathPath,
+        tmnxTlmtryGrpcSubPathInterval,
+        tmnxTlmtryGrpcSubPathFinisColCnt,
+        tmnxTlmtryGrpcSubPathDeferColCnt,
+        tmnxTlmtryGrpcSubPathTotColTime,
+        tmnxTlmtryGrpcSubPathMinColTime,
+        tmnxTlmtryGrpcSubPathAvgColTime,
+        tmnxTlmtryGrpcSubPathMaxColTime
+    }
+    STATUS      current
+    DESCRIPTION
+        "The group of objects supporting the presentation of telemetry files
+         related data for Nokia SROS systems."
+    ::= { tmnxTelemetryInitialGroups 1 }
+
+END
