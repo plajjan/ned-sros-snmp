@@ -531,40 +531,7 @@ TmnxBsxExprSubStringType         ::= TEXTUAL-CONVENTION
 TmnxBsxExprSubString             ::= TEXTUAL-CONVENTION
     STATUS      current
     DESCRIPTION
-        "Denotes a printable ASCII substring used as input to an application
-         assurance filter match criteria object. The following syntax is
-         permitted within the substring to define the pattern match criteria:
-
-         ^<substring>* - matches when <substring> is at the beginning
-                         of the object.
-         *<substring>* - matches when <substring> is at any place
-                         within the object.
-         *<substring>$ - matches when <substring> is at the end
-                         of the object.
-         ^<substring>$ - matches when <substring> is the entire object.
-
-         Rules for <substring> characters:
-         ---------------------------------
-
-         - <substring> must contain printable ASCII characters.
-         - <substring> must not contain the 'double quote' character
-                       or the ' ' (space) character on its own.
-         - <substring> match is case sensitive.
-         - <substring> must not include any Regular Expression
-                       meta-characters.
-
-         - The '\' character is used as an ESCAPE sequence.
-         - the following ESCAPE sequences are permitted within
-           the <substring>:
-
-         character to match     <substring> input
-         ------------------    ------------------
-         \                        \
-         Hexidecimal Octet YY     \xYY
-
-         Note: A <substring> that uses the '\' (backslash) ESCAPE character
-         which is not followed by a '\' or '\x' and a 2-digit hex octet is not
-         valid."
+        "FOO"
     SYNTAX      DisplayString (SIZE (0..255))
 
 TmnxBsxFirstPacketPolicy         ::= TEXTUAL-CONVENTION
