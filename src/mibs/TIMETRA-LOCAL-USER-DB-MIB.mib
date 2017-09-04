@@ -277,13 +277,7 @@ TmnxLocUsrDbDataFormat           ::= TEXTUAL-CONVENTION
 TmnxLocUsrDbMaskString           ::= TEXTUAL-CONVENTION
     STATUS      current
     DESCRIPTION
-        "The TmnxLocUsrDbMaskString data type contains a a substring that is
-         stripped off the start or the end of an incoming string before it is
-         matched.
-
-         This string can only contain printable ASCII characters. Character '*'
-         is a wildcard that matches any substring; it can be escaped by
-         character '\'."
+        "FOO"
     SYNTAX      DisplayString (SIZE (0..127))
 
 TmnxLudbDataFormat               ::= TEXTUAL-CONVENTION
@@ -559,7 +553,7 @@ tmnxLocUsrDbPppoeCIdMaskPreStr   OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring. It can be escaped by
-         character '\'."
+         character '\\'."
     DEFVAL      { "" }
     ::= { tmnxLocalUserDbEntry 13 }
 
@@ -587,7 +581,7 @@ tmnxLocUsrDbPppoeCIdMaskSufStr   OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring. It can be escaped by
-         character '\'."
+         character '\\'."
     DEFVAL      { "" }
     ::= { tmnxLocalUserDbEntry 15 }
 
@@ -615,7 +609,7 @@ tmnxLocUsrDbDhcpCIdMaskPreStr    OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring. It can be escaped by
-         character '\'."
+         character '\\'."
     DEFVAL      { "" }
     ::= { tmnxLocalUserDbEntry 17 }
 
@@ -643,7 +637,7 @@ tmnxLocUsrDbDhcpCIdMaskSufStr    OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring. It can be escaped by
-         character '\'."
+         character '\\'."
     DEFVAL      { "" }
     ::= { tmnxLocalUserDbEntry 19 }
 
@@ -3275,7 +3269,7 @@ tmnxLocUsrDbDhcpMaskPreStr       OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring; it can be escaped by
-         character '\'.
+         character '\\'.
 
          At least one of the values of tmnxLocUsrDbDhcpMaskPreNum and
          tmnxLocUsrDbDhcpMaskPreStr must be equal to the default value."
@@ -3309,7 +3303,7 @@ tmnxLocUsrDbDhcpMaskSufStr       OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring; it can be escaped by
-         character '\'.
+         character '\\'.
 
          At least one of the values of tmnxLocUsrDbDhcpMaskSufNum and
          tmnxLocUsrDbDhcpMaskSufStr must be equal to the default value."
@@ -3418,7 +3412,7 @@ tmnxLocUsrDbPppoeMaskPreStr      OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring; it can be escaped by
-         character '\'.
+         character '\\'.
 
          At least one of the values of tmnxLocUsrDbPppoeMaskPreNum and
          tmnxLocUsrDbPppoeMaskPreStr must be equal to the default value."
@@ -3452,7 +3446,7 @@ tmnxLocUsrDbPppoeMaskSufStr      OBJECT-TYPE
 
          This string can only contain printable ASCII characters. Character '*'
          is a wildcard that matches any substring; it can be escaped by
-         character '\'.
+         character '\\'.
 
          At least one of the values of tmnxLocUsrDbPppoeMaskSufNum and
          tmnxLocUsrDbPppoeMaskSufStr must be equal to the default value."
