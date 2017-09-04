@@ -2540,7 +2540,6 @@ tLagDynamicCostOff               NOTIFICATION-TYPE
 tLagPortAddFailed                NOTIFICATION-TYPE
     OBJECTS     {
         tLagRowStatus,
-        tmnxPortLagId,
         tLagNotifyPortAddFailReason
     }
     STATUS      current
@@ -2563,7 +2562,6 @@ tLagSubGroupSelected             NOTIFICATION-TYPE
 tLagPortAddFailureCleared        NOTIFICATION-TYPE
     OBJECTS     {
         tLagRowStatus,
-        tmnxPortLagId,
         tLagNotifyPortAddFailReason
     }
     STATUS      current
@@ -2586,7 +2584,6 @@ tLagStateEvent                   NOTIFICATION-TYPE
 tLagMemberStateEvent             NOTIFICATION-TYPE
     OBJECTS     {
         tLagRowStatus,
-        tmnxPortLagId,
         tLagNotifyAdditionalInfo,
         tLagNotifyStateChangedReason
     }
