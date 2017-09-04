@@ -13,7 +13,6 @@ all: fxs
 
 yang/%.yang: mibs/%.mib
 	mkdir -p yang
-	@echo Compiling $< into $@
 	cd mibs && /opt/ncs/current/bin/ncsc --mib2yang-std --prefix $(shell echo $@ | tr '[:upper:]' '[:lower:]' | sed -e 's/^yang.//' -e 's/\.yang//') -o ../$@ ../$<
 
 fxs: $(YANG)
