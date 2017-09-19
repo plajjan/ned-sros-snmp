@@ -23,14 +23,6 @@ stages:
       - .
 
 
-test-4.2.3:
-  image: gitlab.dev.terastrm.net:4567/terastream/cisco-nso/ci-cisco-nso:4.2.3
-  <<: *test-template
-
-test-4.3.3:
-  image: gitlab.dev.terastrm.net:4567/terastream/cisco-nso/ci-cisco-nso:4.3.3
-  <<: *test-template
-
 test-4.4.3:
   image: gitlab.dev.terastrm.net:4567/terastream/cisco-nso/ci-cisco-nso:4.4.3
   <<: *test-template
