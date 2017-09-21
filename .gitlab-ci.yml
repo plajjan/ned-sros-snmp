@@ -20,7 +20,7 @@ stages:
     - echo ${CI_JOB_ID} >> ned-package-list.${NCS_VERSION}
   artifacts:
     paths:
-      - .
+      - ./[a-z]*
 
 
 test-4.4.3:
